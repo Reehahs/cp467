@@ -105,6 +105,7 @@ if ($rowcount < 50) {
 
 include("login.html");
 
+
 #find student ID in name table
 #prepared statement
 $stmt = $conn->prepare("SELECT * FROM Name_Table WHERE StudentID = ?");
@@ -130,4 +131,16 @@ if(mysqli_num_rows($result) > 0){
 #else student ID does not exist in name table
 else{
     echo 'fail';
+}
+
+#update student grade
+
+#assume that user selects a course,
+function updateStudentGrade($id, $coursecode, $column, $conn){
+    #prepared statement
+    $stmt = $conn->prepare("UPDATE Course_Table SET ". $column ." = ? WHERE StudentID = ? AND CourseCode = ?");
+    $stmt->bind_param("is", $id, $coursecode);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return;
 }
