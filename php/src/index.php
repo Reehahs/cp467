@@ -104,3 +104,28 @@ if ($rowcount < 50) {
 }
 
 include("login.html");
+
+#find student ID in name table
+#prepare statement
+$stmt = $conn->prepare("SELECT * FROM Name_Table WHERE StudentID = ?");
+$stmt->bind_param("i", $id);
+$id = $_POST['id'];
+$stmt->execute();
+$result = $stmt->get_result();
+
+
+#if student ID is found from name table then get rows from course table containing student id
+if(mysqli_num_rows($result) > 0){
+    $stmt = $conn->prepare("SELECT CourseCode, Test1, Test2, Test3, Final FROM Course_Table WHERE StudentID = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while($row = mysqli_fetch_array($result)){
+        echo print_r($row);
+    }
+
+    include("main.html");
+}
+else{
+    echo 'fail';
+}
