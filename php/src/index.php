@@ -1,5 +1,9 @@
 <?php
-ob_start();
+
+ob_start(); #needed for redirect to work
+session_start();
+error_reporting(E_ERROR | E_PARSE); #hides error and warning messages
+
 include __DIR__ . '/Helper/DotEnv.php';
 (new DotEnv(__DIR__ . '/.env'))->load();
 
@@ -116,14 +120,15 @@ $stmt->execute();
 $result = $stmt->get_result();
 $student_name = mysqli_fetch_array($result)[1]; #obtain student name from result
 
-#set post variable
-$_POST['studentname'] = $student_name;
+#set session variables
+$_SESSION['studentname'] = $student_name;
+$_SESSION['id'] = $id;
 
 #if student ID is found from name table then get rows from course table containing student id
 if(mysqli_num_rows($result) > 0){
     
     #redirect to main.html
-    header("Location: /main.html");
+    header("Location: /main.php");
     exit;
     $stmt = $conn->prepare("SELECT CourseCode, Test1, Test2, Test3, Final FROM Course_Table WHERE StudentID = ?");
     $stmt->bind_param("i", $id);
@@ -135,7 +140,8 @@ if(mysqli_num_rows($result) > 0){
     while($row = mysqli_fetch_array($result)){
         array_push($rows, $row);
     }
-    $_POST['results'] = $rows; #store rows in post variable
+    $_SESSION['results'] = $rows; #store rows in post variable
+
 }
 #else student ID does not exist in name table
 else{
