@@ -67,7 +67,34 @@ tfoot {
     </div>
 </form>
 <table style="width:100%">
-  <tr>
+
+<tr>
+
+<th>Course</th>
+<th>Test 1</th>
+<th>Test 2</th>
+<th>Test 3</th>
+<th>Final</th>
+<th>Total</th>
+
+
+</tr>
+<?php
+
+for ($i = 0; $i < 1; $i++) {
+  echo('<tr>');
+  echo('<td>' . $data[$i]['CourseCode'] . '</td>');
+  echo('<td>' . $data[$i]['Test1'] . '</td>');
+  echo('<td>' . $data[$i]['Test2'] . '</td>');
+  echo('<td>' . $data[$i]['Test3'] . '</td>');
+  echo('<td>' . $data[$i]['Final'] . '</td>');
+  echo('<td></td>');
+  echo('</tr>');
+
+}
+
+?>
+  <!-- <tr>
     <th>Subject</th>
     <th>Grades</th>
   <tbody> 
@@ -106,7 +133,7 @@ tfoot {
     <td>MA102</td>
     <td>95</td>
     
-  </tr>
+  </tr> -->
   </tbody>
   <tfoot>
     <tr>
