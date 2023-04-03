@@ -81,6 +81,26 @@ tfoot {
 
 
 
+<label for="CourseCode">Choose a Course:</label>
+
+<select name="CourseCode" id="CourseCode">
+  <?php 
+  for ($i = 0; $i < count($_SESSION['results']); $i++) {
+    
+  echo "<option value='" .$_SESSION['results'][$i]['CourseCode'] . "'>" .$_SESSION['results'][$i]['CourseCode'] . "</option>";
+  }
+    ?>
+</select>
+<label for="TestName">Choose the Test:</label>
+
+<select name="TestName" id="TestName">
+  <option value="Test 1">Test 1</option>
+  <option value="Test 2">Test 2</option>
+  <option value="Test 3">Test 3</option>
+</select>
+<label for="marks">Marks:</label>
+<input type="text" id="marks" />
+<button class="lohoit-button" style="background-color:green">Update</button>
 <?php
 for ($i = 0; $i < count($_SESSION['results']); $i++) {
   echo('<tr>');
