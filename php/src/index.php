@@ -145,7 +145,7 @@ if(mysqli_num_rows($result) > 0){
 
 }else{
     if (isset($id)){
-        echo '<script>alert("Invalid User.")</script>';
+        echo '<script>alert("Invalid Student Id.")</script>';
     }
 }
     
