@@ -81,13 +81,13 @@ tfoot {
 </tr>
 <?php
 
-for ($i = 0; $i < 1; $i++) {
+for ($i = 0; $i < count($_SESSION['results']); $i++) {
   echo('<tr>');
-  echo('<td>' . $data[$i]['CourseCode'] . '</td>');
-  echo('<td>' . $data[$i]['Test1'] . '</td>');
-  echo('<td>' . $data[$i]['Test2'] . '</td>');
-  echo('<td>' . $data[$i]['Test3'] . '</td>');
-  echo('<td>' . $data[$i]['Final'] . '</td>');
+  echo('<td>' . $_SESSION['results'][$i]['CourseCode'] . '</td>');
+  echo('<td>' . $_SESSION['results'][$i]['Test1'] . '</td>');
+  echo('<td>' . $_SESSION['results'][$i]['Test2'] . '</td>');
+  echo('<td>' . $_SESSION['results'][$i]['Test3'] . '</td>');
+  echo('<td>' . $_SESSION['results'][$i]['Final'] . '</td>');
   echo('<td></td>');
   echo('</tr>');
 
