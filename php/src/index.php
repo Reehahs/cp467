@@ -16,9 +16,10 @@ ob_flush();
 $conn = new mysqli($host, $user, $pass, 'cp476');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-} else {
-    print("Connected to MySQL server successfully!\n");
-}
+} 
+// else {
+//     print("Connected to MySQL server successfully!\n");
+// }
 
 // NAME TABLE:
 
@@ -145,7 +146,7 @@ if(mysqli_num_rows($result) > 0){
 }
 #else student ID does not exist in name table
 else{
-    echo 'fail';
+    // echo 'fail';
 }
 
 #update student grade
