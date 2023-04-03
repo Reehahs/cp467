@@ -48,10 +48,25 @@ tfoot {
       .logout-button:hover {
         background-color: #d32f2f;
       }
+      .refresh-button {
+        float: right;
+        margin-top: 20px;
+        margin-right: 20px;
+        padding: 10px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
 </style>
 <body>
 <form action="index.php" method="post">
   <button class="logout-button" type="submit">Logout</button>   
+</form> 
+
+<form action="main.php" method="post">
+  <button class="refresh-button" type="submit" style="background-color:green">Update Table</button>   
 </form> 
 <center>
 <h2>Student Home</h2>
@@ -192,7 +207,6 @@ createTable();
 
 <?php
 error_reporting(E_ERROR | E_PARSE); #hides error and warning messages
-
 #get connection to database
 include __DIR__ . '/Helper/DotEnv.php';
 (new DotEnv(__DIR__ . '/.env'))->load();
@@ -224,10 +238,7 @@ if($stmt!==false){
       array_push($rows, $row);
   }
   $_SESSION['results'] = $rows; #store rows in post variable
-  $page = $_SERVER['PHP_SELF'];
-  $sec = "10";
-  header("Refresh: $sec; url=$page");
-
+  #echo "<script>window.location.reload()</script>";
   #todo: needs a refresh to show new updated value, fix if possible
 }
 
