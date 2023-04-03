@@ -74,8 +74,8 @@ tfoot {
 <th>Test 1</th>
 <th>Test 2</th>
 <th>Test 3</th>
-<th>Final</th>
-<th>Total</th>
+<th>Final Exam</th>
+<th>FInal Grade</th>
 
 
 </tr>
@@ -88,7 +88,9 @@ for ($i = 0; $i < count($_SESSION['results']); $i++) {
   echo('<td>' . $_SESSION['results'][$i]['Test2'] . '</td>');
   echo('<td>' . $_SESSION['results'][$i]['Test3'] . '</td>');
   echo('<td>' . $_SESSION['results'][$i]['Final'] . '</td>');
-  echo('<td></td>');
+  $finalgrade = 0.2*($_SESSION['results'][$i]['Test1'] + $_SESSION['results'][$i]['Test2'] + $_SESSION['results'][$i]['Test3'])
+  + 0.4*$_SESSION['results'][$i]['Final'];
+  echo('<td> '. $finalgrade .' </td>');
   echo('</tr>');
 
 }
