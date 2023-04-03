@@ -93,9 +93,7 @@ for ($i = 0; $i < count($_SESSION['results']); $i++) {
   + 0.4*$_SESSION['results'][$i]['Final'];
   echo('<td> '. $finalgrade .' </td>');
   echo('</tr>');
-
 }
-
 ?>
   <!-- <tr>
     <th>Subject</th>
