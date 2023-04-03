@@ -130,7 +130,7 @@ if(mysqli_num_rows($result) > 0){
     
     #redirect to main.html
     header("Location: /main.php");
-    exit;
+    //exit;
     $stmt = $conn->prepare("SELECT CourseCode, Test1, Test2, Test3, Final FROM Course_Table WHERE StudentID = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();

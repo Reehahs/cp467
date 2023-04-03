@@ -1,7 +1,6 @@
 <?php
 session_start();
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -62,7 +61,7 @@ tfoot {
         <label>Student Id : </label>
         <input type="text" value= <?php echo $_SESSION["id"]; ?> readonly >
         <label>Name : </label>
-        <input type="text" value=<?php echo $_SESSION["studentname"]; ?> readonly>
+        <input type="text" value= <?php echo $_SESSION["studentname"]; ?>  readonly>
        
     </div>
 </form>
@@ -79,8 +78,10 @@ tfoot {
 
 
 </tr>
-<?php
 
+
+
+<?php
 for ($i = 0; $i < count($_SESSION['results']); $i++) {
   echo('<tr>');
   echo('<td>' . $_SESSION['results'][$i]['CourseCode'] . '</td>');
