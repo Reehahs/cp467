@@ -50,7 +50,9 @@ tfoot {
       }
 </style>
 <body>
-<button class="logout-button">Logout</button>    
+<form action="index.php" method="post">
+  <button class="logout-button" type="submit">Logout</button>   
+</form> 
 <center>
 <h2>Student Home</h2>
 </center>
@@ -164,19 +166,19 @@ createTable();
   </tbody>
   <tfoot>
     <tr>
-      <td>Total</td>
+      <td>Overall Average</td>
       <td>
         <!-- JavaScript code to calculate the total grade -->
         <script>
-          function calculateTotalGrade(){
-            var grades = document.querySelectorAll("tbody td:last-child");
-                var total = 0;
-                for (var i = 0; i < grades.length; i++) {
-                  total += parseFloat(grades[i].textContent);
-                }
-                var average = total / grades.length;
-                document.write(average.toFixed(2) + "%");
-          }
+
+          var grades = document.querySelectorAll("tbody td:last-child");
+              var total = 0;
+              for (var i = 0; i < grades.length; i++) {
+                total += parseFloat(grades[i].textContent);
+              }
+              var average = total / grades.length;
+              document.write(average.toFixed(2) + "%");
+        
         </script>
       </td>
     </tr>
@@ -222,9 +224,10 @@ if($stmt!==false){
       array_push($rows, $row);
   }
   $_SESSION['results'] = $rows; #store rows in post variable
+  $page = $_SERVER['PHP_SELF'];
+  $sec = "10";
+  header("Refresh: $sec; url=$page");
+
   #todo: needs a refresh to show new updated value, fix if possible
 }
-// echo '<script type="text/javascript">',
-//      'calculateTotalGrade();',
-//      '</script>'
-// ;
+
