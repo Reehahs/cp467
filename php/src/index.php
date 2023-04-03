@@ -144,9 +144,9 @@ if(mysqli_num_rows($result) > 0){
     $_SESSION['results'] = $rows; #store rows in post variable
 
 }else{
-    if (isset($id)){
-        echo '<script>alert("Invalid Student Id.")</script>';
-    }
+    // if (isset($id) & isset($stmt)){
+    //     echo '<script>alert("Invalid Student Id.")</script>';
+    // }
 }
     
 #else student ID does not exist in name table
