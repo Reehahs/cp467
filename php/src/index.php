@@ -116,7 +116,7 @@ include("login.html");
 #prepared statement
 $stmt = $conn->prepare("SELECT * FROM Name_Table WHERE StudentID = ?");
 $stmt->bind_param("i", $id);
-$id = $_POST['id'];
+$id = filter_var($_POST['id'], FILTER_VALIDATE_INT) !== false ? $_POST['id'] : ""; #validate id input
 $stmt->execute();
 $result = $stmt->get_result();
 $student_name = mysqli_fetch_array($result)[1]; #obtain student name from result
