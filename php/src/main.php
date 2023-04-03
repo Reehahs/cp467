@@ -80,40 +80,46 @@ tfoot {
 </tr>
 
 
+<form action="main.php" method="post">
+  <label for="CourseCode">Choose a Course:</label>
 
-<label for="CourseCode">Choose a Course:</label>
+  <select name="CourseCode" id="CourseCode">
+    <?php 
+    for ($i = 0; $i < count($_SESSION['results']); $i++) {
+      
+    echo "<option value='" .$_SESSION['results'][$i]['CourseCode'] . "'>" .$_SESSION['results'][$i]['CourseCode'] . "</option>";
+    }
+      ?>
+  </select>
+  <label for="TestName">Choose the Test:</label>
 
-<select name="CourseCode" id="CourseCode">
-  <?php 
-  for ($i = 0; $i < count($_SESSION['results']); $i++) {
-    
-  echo "<option value='" .$_SESSION['results'][$i]['CourseCode'] . "'>" .$_SESSION['results'][$i]['CourseCode'] . "</option>";
-  }
-    ?>
-</select>
-<label for="TestName">Choose the Test:</label>
+  <select name="TestName" id="TestName">
+    <option value="Test1">Test 1</option>
+    <option value="Test2">Test 2</option>
+    <option value="Test3">Test 3</option>
+    <option value="Final">Final Exam</option>
+  </select>
+  <label for="marks">Update Mark:</label>
+  <input type="number" id="marks" name='marks' step='1' min="0" max="100" required/>
+  <button onclick="toggle(this)" type="submit" class="lohoit-button" style="background-color:green">Update</button>
+</form>
 
-<select name="TestName" id="TestName">
-  <option value="Test 1">Test 1</option>
-  <option value="Test 2">Test 2</option>
-  <option value="Test 3">Test 3</option>
-</select>
-<label for="marks">Marks:</label>
-<input type="text" id="marks" />
-<button class="lohoit-button" style="background-color:green">Update</button>
 <?php
-for ($i = 0; $i < count($_SESSION['results']); $i++) {
-  echo('<tr>');
-  echo('<td>' . $_SESSION['results'][$i]['CourseCode'] . '</td>');
-  echo('<td>' . $_SESSION['results'][$i]['Test1'] . '</td>');
-  echo('<td>' . $_SESSION['results'][$i]['Test2'] . '</td>');
-  echo('<td>' . $_SESSION['results'][$i]['Test3'] . '</td>');
-  echo('<td>' . $_SESSION['results'][$i]['Final'] . '</td>');
-  $finalgrade = 0.2*($_SESSION['results'][$i]['Test1'] + $_SESSION['results'][$i]['Test2'] + $_SESSION['results'][$i]['Test3'])
-  + 0.4*$_SESSION['results'][$i]['Final'];
-  echo('<td> '. $finalgrade .' </td>');
-  echo('</tr>');
+function createTable(){
+  for ($i = 0; $i < count($_SESSION['results']); $i++) {
+    echo('<tr>');
+    echo('<td>' . $_SESSION['results'][$i]['CourseCode'] . '</td>');
+    echo('<td>' . $_SESSION['results'][$i]['Test1'] . '</td>');
+    echo('<td>' . $_SESSION['results'][$i]['Test2'] . '</td>');
+    echo('<td>' . $_SESSION['results'][$i]['Test3'] . '</td>');
+    echo('<td>' . $_SESSION['results'][$i]['Final'] . '</td>');
+    $finalgrade = 0.2*($_SESSION['results'][$i]['Test1'] + $_SESSION['results'][$i]['Test2'] + $_SESSION['results'][$i]['Test3'])
+    + 0.4*$_SESSION['results'][$i]['Final'];
+    echo('<td> '. $finalgrade .' </td>');
+    echo('</tr>');
+  }
 }
+createTable();
 ?>
   <!-- <tr>
     <th>Subject</th>
@@ -162,13 +168,15 @@ for ($i = 0; $i < count($_SESSION['results']); $i++) {
       <td>
         <!-- JavaScript code to calculate the total grade -->
         <script>
-          var grades = document.querySelectorAll("tbody td:last-child");
-              var total = 0;
-              for (var i = 0; i < grades.length; i++) {
-                total += parseFloat(grades[i].textContent);
-              }
-              var average = total / grades.length;
-              document.write(average.toFixed(2) + "%");
+          function calculateTotalGrade(){
+            var grades = document.querySelectorAll("tbody td:last-child");
+                var total = 0;
+                for (var i = 0; i < grades.length; i++) {
+                  total += parseFloat(grades[i].textContent);
+                }
+                var average = total / grades.length;
+                document.write(average.toFixed(2) + "%");
+          }
         </script>
       </td>
     </tr>
@@ -180,3 +188,43 @@ for ($i = 0; $i < count($_SESSION['results']); $i++) {
 </body>
 </html>
 
+<?php
+error_reporting(E_ERROR | E_PARSE); #hides error and warning messages
+
+#get connection to database
+include __DIR__ . '/Helper/DotEnv.php';
+(new DotEnv(__DIR__ . '/.env'))->load();
+$host = 'db';
+$user = 'root';
+$pass = getenv('MYSQL_ROOT_PASSWORD');
+$conn = new mysqli($host, $user, $pass, 'cp476');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+#prepared statement
+$column = $_POST['TestName'];
+$stmt = $conn->prepare("UPDATE Course_Table SET ". $column ."=? WHERE StudentID =? AND CourseCode =?");
+if($stmt!==false){
+  $stmt->bind_param("iis", $mark,$id, $coursecode);
+  $mark = intval($_POST['marks']);
+  $id = $_SESSION['id'];
+  $coursecode = $_POST['CourseCode'];
+  $stmt->execute();
+  $stmt = $conn->prepare("SELECT CourseCode, Test1, Test2, Test3, Final FROM Course_Table WHERE StudentID =? AND CourseCode=?");
+  $stmt->bind_param("ii", $id, $coursecode);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  
+  #get each line from query and push to rows array
+  $rows = [];
+  while($row = mysqli_fetch_array($result)){
+      array_push($rows, $row);
+  }
+  $_SESSION['results'] = $rows; #store rows in post variable
+  #todo: needs a refresh to show new updated value, fix if possible
+}
+// echo '<script type="text/javascript">',
+//      'calculateTotalGrade();',
+//      '</script>'
+// ;
