@@ -143,11 +143,14 @@ if(mysqli_num_rows($result) > 0){
     }
     $_SESSION['results'] = $rows; #store rows in post variable
 
+}else{
+    if (isset($id)){
+        echo '<script>alert("Invalid User.")</script>';
+    }
 }
+    
 #else student ID does not exist in name table
-else{
-    // echo 'fail';
-}
+
 
 #update student grade
 
